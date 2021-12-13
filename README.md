@@ -178,3 +178,26 @@ npx 是 npm5.2 之后自带的一个命令
 ## pnpm
 
 # 实践：自建脚手架
+常规脚手架初始化存在的问题
+- 未划分目录结构
+- 缺少基本配置，例如：vue.config.js
+- axios封装
+- 组件库配置
+- router配置
+- vuex
+
+1 添加 #! shebang（hashbang）
+```shell
+#!/usr/bin/env node
+```
+
+即，指明用什么shell程序来解释此脚本
+>把一句 shebang 作为一个 shell 脚本的第一行（严格上讲，shebang 指的是 #! 这俩字符；我这里偷个懒，用它代指含有 #! 的第一行），那么，Bourne 兼容 shell（例如 bash、dash）等等就会根据 shebang 中指定的路径去寻找程序，再把这个脚本发给那个程序去执行。
+
+>需要注意，shebang 指定的“程序路径”实际上是一句命令（所谓 interpreter directive）。一般来说，这个“程序路径”是一个可执行文件的绝对路径，并允许附带一个参数。
+
+2 引入commander
+
+3 划分目录结构
+
+[拓展阅读](https://juejin.cn/post/6844904160001785869#comment)
