@@ -98,5 +98,83 @@ semver 版本规范是X.Y.Z
 - 并不是类似于 axios、express、koa 等库文件
 - 所以全局安装之后并不能让我们在所有项目中使用 axios 等库
 
-cnpm
-pnpm
+### 局部安装
+局部安装分为 `开发时依赖` 和 `生产时依赖`
+安装开发和生产依赖
+npm install axios
+npm i axios
+
+问题，如果没有正确区分局部/全局安装，会有是吗影响
+
+开发依赖
+
+注意：直接执行 npm install，会根据 package.json 中的依赖包进行安装
+补充：（自己的实践）npm install 后问题解决（可复询志恒）
+
+### npm install 原理
+- 执行 npm install 其背后帮我们完成了什么操作
+- 会发现还有一个成为 package-lock.json 的文件，其作用是什么？
+- 从 npm5 开始，npm 支持缓存策略（来自 yarn 的压力），缓存有什么作用？
+
+(流程图)
+文字
+- 没有 lock 文件
+    - 分析依赖关系
+    - 从 registry 仓库中下载压缩包（如果设置了镜像，会从镜像服务器下载压缩包）
+    - 到压缩包后会对压缩包进行缓存（npm5 开始）
+    - 将压缩包解压到项目的 node_modules 文件夹中（require的查找顺序）
+- 有 lock 文件
+    - 检测 lock 中包的版本是否和 package.json 中一致（按照 semver 版本规范检测）
+        - 不一致，会重新构建依赖关系，走顶层流程
+    - 一致的情况下，会优先查找缓存
+        - 没找到，会从 registry 仓库下载，走顶层流程
+    - 查找到，会获取缓存中的压缩文件，并且将压缩文件解压到 node_modules 文件夹中
+
+添加说明：`检查依赖一致性`
+
+
+原本为树形结构，存在重复安装依赖的问题，后改为扁平结构
+
+
+详解 package-lock.json
+
+关于：要不要提交 package-lock.json
+两种论调
+
+获取当前缓存路径
+npm config get cache
+
+npm i 和 npm ci
+
+### npm其他命令（常用）
+卸载依赖包
+```
+npm uninstall package
+npm uninstall package --save-dev
+npm uninstall package -D
+```
+
+强制重新build
+npm rebuild
+
+清除缓存
+npm cache clean
+
+[学习链接](https://juejin.cn/post/6844903870578032647)
+
+## Yarn
+
+
+## cnpm
+
+## npx
+npx 是 npm5.2 之后自带的一个命令
+- 调用项目安装的模块
+- 避免全局安装模块
+- 使用不同版本的 node
+- 执行 GitHub 源码
+
+[阮一峰-npx](https://www.ruanyifeng.com/blog/2019/02/npx.html)
+## pnpm
+
+# 实践：自建脚手架
